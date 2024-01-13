@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 const cookieParser = require("cookie-parser");
 const authroute = require("./Routes/AuthRoute");
-
+const gymroute = require("./Routes/GymRoute");
 //Used for hiding information
 require("dotenv").config();
 const { MONGODB_CON, PORT } = process.env;
@@ -43,3 +43,4 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use("/", authroute);
+app.use("/", gymroute);
