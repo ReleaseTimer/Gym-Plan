@@ -133,40 +133,44 @@ const Gymplan = () => {
   };
 
   return (
-    <main id="gymplan">
-      <h2>My Gym Plans</h2>
-      <form onSubmit={addPlan}>
-        <input
-          type="text"
-          id="addPlan"
-          name="planName"
-          placeholder="Enter Plan Name"
-        />
-        <button type="submit">Add Plan</button>
-      </form>
-      <ul>
-        {gymPlanData.map((plan) => (
-          <li key={plan._id} id={plan._id}>
-            {editingPlanId === plan._id ? (
-              <input
-                type="text"
-                defaultValue={plan.planName}
-                onBlur={(e) => editPlan(plan._id, e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter") {
-                    editPlan(plan._id, e.target.value);
-                  }
-                }}
-                autoFocus
-              />
-            ) : (
-              <span onClick={() => selectPlan(plan._id)}>{plan.planName}</span>
-            )}
-            <button onClick={() => setEditingPlanId(plan._id)}>Edit</button>
-            <button onClick={() => deletePlan(plan._id)}>Delete</button>
-          </li>
-        ))}
-      </ul>
+    <main>
+      <div id="gymplan">
+        <h2>My Gym Plans</h2>
+        <form onSubmit={addPlan}>
+          <input
+            type="text"
+            id="addPlan"
+            name="planName"
+            placeholder="Enter Plan Name"
+          />
+          <button type="submit">Add Plan</button>
+        </form>
+        <ul>
+          {gymPlanData.map((plan) => (
+            <li key={plan._id} id={plan._id}>
+              {editingPlanId === plan._id ? (
+                <input
+                  type="text"
+                  defaultValue={plan.planName}
+                  onBlur={(e) => editPlan(plan._id, e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                      editPlan(plan._id, e.target.value);
+                    }
+                  }}
+                  autoFocus
+                />
+              ) : (
+                <span onClick={() => selectPlan(plan._id)}>
+                  {plan.planName}
+                </span>
+              )}
+              <button onClick={() => setEditingPlanId(plan._id)}>Edit</button>
+              <button onClick={() => deletePlan(plan._id)}>Delete</button>
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {selectedPlan && (
         <div id="exercises">
