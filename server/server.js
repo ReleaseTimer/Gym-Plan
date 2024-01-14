@@ -44,3 +44,5 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/", authroute);
 app.use("/", gymroute);
+
+module.exports = app;
