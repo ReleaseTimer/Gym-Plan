@@ -94,3 +94,27 @@ module.exports.UpdateGymPlan = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+//////////////Gym Plan Exercises Controller///////////////////////////
+
+module.exports.AddExercise = async (req, res) => {
+  try {
+    const { _id, exercises } = req.body;
+
+    console.log(_id, exercises);
+
+    const updatedGymPlan = await GymPlan.findByIdAndUpdate(
+      _id,
+      { $push: { exercises: exercises } },
+      { new: true }
+    );
+
+    if (!updatedGymPlan) {
+      return res.status(404).json({ message: "Gym Plan not found" });
+    }
+
+    return res.status(200).json(updatedGymPlan);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
