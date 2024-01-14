@@ -41,3 +41,23 @@ module.exports.GetGymplan = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+module.exports.DeleteGymPlan = async (req, res) => {
+  try {
+    const { _id } = req.query;
+
+    //Checks if plan exist by ID.
+    const planIDexist = await GymPlan.findOne({ _id });
+
+    if (!planIDexist) {
+      return res.status(404).json({ message: "Gym Day not Found" });
+    }
+
+    //Delete by Id send by user
+    await GymPlan.findByIdAndDelete({ _id });
+
+    return res.status(204).json({ message: "Delete Sucessfully id: " + _id });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};

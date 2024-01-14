@@ -68,7 +68,7 @@ const Gymplan = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:9000/create-gym`, {
+      const response = await fetch(`http://localhost:9000/create-gymplan`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -89,13 +89,29 @@ const Gymplan = () => {
   };
 
   // Function to handle deleting a plan
-  const deletePlan = async (planId) => {};
+  const deletePlan = async (_id) => {
+    try {
+      const response = await fetch(
+        `http://localhost:9000/delete-gymplan/?` +
+          new URLSearchParams({ _id }).toString(),
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        fetchGymPlanData();
+      }
+    } catch (error) {
+      console.error("Error deleting plan:", error);
+    }
+  };
 
   // Function to handle editing a plan
-  const editPlan = (planId) => {};
+  const editPlan = (_id) => {};
 
   return (
-    <div id="gymplan">
+    <main id="gymplan">
       <h2>My Gym Plans</h2>
       <form onSubmit={addPlan}>
         <input
@@ -108,7 +124,7 @@ const Gymplan = () => {
       </form>
       <ul>
         {gymPlanData.map((plan) => (
-          <li key={plan._id}>
+          <li key={plan._id} id={plan._id}>
             <span onClick={() => selectPlan(plan._id)}>{plan.planName}</span>
             <button onClick={() => editPlan(plan._id)}>Edit</button>
             <button onClick={() => deletePlan(plan._id)}>Delete</button>
@@ -117,7 +133,7 @@ const Gymplan = () => {
       </ul>
 
       {selectedPlan && (
-        <div>
+        <div id="exercises">
           <h3>Exercises for {selectedPlan.planName}</h3>
           <ul>
             {selectedPlan.exercises.map((exercise, index) => (
@@ -126,7 +142,7 @@ const Gymplan = () => {
           </ul>
         </div>
       )}
-    </div>
+    </main>
   );
 };
 
