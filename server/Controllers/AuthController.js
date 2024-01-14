@@ -41,9 +41,9 @@ module.exports.Register = async (req, res) => {
       token: token, // Optionally send the token
       user: { id: createUser._id, username, email },
     });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -59,6 +59,7 @@ module.exports.Login = async (req, res) => {
         .json({ message: `${email} not found, please register` });
     }
 
+    console.log(user.id);
     //Comparing Password to Hash Password in Database
     const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -69,15 +70,15 @@ module.exports.Login = async (req, res) => {
         withCredentials: true,
         httpOnly: false,
       });
-      res.status(200).json({ message: "User Authenticated" });
+      res.status(200).json({ message: "User Authenticated", id: user.id });
       console.log(req.body);
     } else {
       res.status(401).json({ message: "Invalid credentials" });
       console.log(req.body);
     }
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -92,8 +93,8 @@ module.exports.CheckAuth = async (req, res) => {
     } else {
       return res.status(401).json({ message: "Unauthorized" + verified });
     }
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

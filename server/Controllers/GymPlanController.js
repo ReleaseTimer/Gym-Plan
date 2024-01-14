@@ -14,9 +14,9 @@ module.exports.CreateGymPlan = async (req, res) => {
     });
 
     res.status(201).json({ message: "Exercise Plan Created" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Server error", error: err.message });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
@@ -37,7 +37,7 @@ module.exports.GetGymplan = async (req, res) => {
     }
 
     res.status(200).json(gymPlans);
-  } catch (err) {
-    res.status(500).json({ message: "Server error", error: err.message });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

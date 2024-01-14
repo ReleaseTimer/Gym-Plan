@@ -32,8 +32,11 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ username, password }),
         credentials: "include", // to send cookies
       });
+
       if (response.ok) {
         setIsAuthenticated(true);
+      } else {
+        console.log(`Login failed with status: ${response.status}`);
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -48,7 +51,6 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ username, email, password }),
       });
       if (response.ok) {
-        // Optionally log the user in immediately after registration
         login(username, password);
       }
     } catch (error) {
