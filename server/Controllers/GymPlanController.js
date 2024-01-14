@@ -61,3 +61,36 @@ module.exports.DeleteGymPlan = async (req, res) => {
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };
+
+module.exports.UpdateGymPlan = async (req, res) => {
+  const { _id, planName } = req.body;
+  const planIDexist = await GymPlan.findOne({ _id });
+
+  if (!planIDexist) {
+    return res.status(404).json({ message: "Gym Day not Found" });
+  }
+};
+
+module.exports.UpdateGymPlan = async (req, res) => {
+  try {
+    const { planName, _id } = req.body;
+
+    const planIDexist = await GymPlan.findOne({ _id });
+
+    if (!planIDexist) {
+      return res.status(404).json({ message: "Gym Day not Found" });
+    }
+
+    //Update an Gym Plan
+    const updateGymPlan = await GymPlan.updateOne(
+      { _id: { _id } },
+      {
+        planName,
+      }
+    );
+
+    return res.status(202).json(updateGymPlan);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};

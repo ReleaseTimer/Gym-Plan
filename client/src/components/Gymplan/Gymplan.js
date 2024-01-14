@@ -6,6 +6,7 @@ const Gymplan = () => {
   const [gymPlanData, setGymPlanData] = useState([]);
   const { isAuthenticated } = useContext(AuthContext);
   const [selectedPlan, setSelectedPlan] = useState(null);
+  const [editingPlanId, setEditingPlanId] = useState(null);
 
   let cookieValue = document.cookie.replace(
     /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,
@@ -108,7 +109,28 @@ const Gymplan = () => {
   };
 
   // Function to handle editing a plan
-  const editPlan = (_id) => {};
+  const editPlan = async (_id, newPlanName) => {
+    try {
+      const response = await fetch(`http://localhost:9000/update-gymplan`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planName: newPlanName, _id: _id }),
+        credentials: "include",
+      });
+      if (response.ok) {
+        // Update the local state with the new plan name
+        const updatedPlans = gymPlanData.map((plan) =>
+          plan._id === _id ? { ...plan, planName: newPlanName } : plan
+        );
+        setGymPlanData(updatedPlans);
+        setEditingPlanId(null); // Stop editing mode
+      } else {
+        console.error("Failed to update plan:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error updating plan:", error);
+    }
+  };
 
   return (
     <main id="gymplan">
@@ -125,8 +147,22 @@ const Gymplan = () => {
       <ul>
         {gymPlanData.map((plan) => (
           <li key={plan._id} id={plan._id}>
-            <span onClick={() => selectPlan(plan._id)}>{plan.planName}</span>
-            <button onClick={() => editPlan(plan._id)}>Edit</button>
+            {editingPlanId === plan._id ? (
+              <input
+                type="text"
+                defaultValue={plan.planName}
+                onBlur={(e) => editPlan(plan._id, e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    editPlan(plan._id, e.target.value);
+                  }
+                }}
+                autoFocus
+              />
+            ) : (
+              <span onClick={() => selectPlan(plan._id)}>{plan.planName}</span>
+            )}
+            <button onClick={() => setEditingPlanId(plan._id)}>Edit</button>
             <button onClick={() => deletePlan(plan._id)}>Delete</button>
           </li>
         ))}
