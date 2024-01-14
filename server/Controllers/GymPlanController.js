@@ -1,4 +1,5 @@
 const GymPlan = require("../Models/GymModel");
+const mongoose = require("mongoose");
 
 module.exports.CreateGymPlan = async (req, res) => {
   try {
@@ -63,15 +64,6 @@ module.exports.DeleteGymPlan = async (req, res) => {
 };
 
 module.exports.UpdateGymPlan = async (req, res) => {
-  const { _id, planName } = req.body;
-  const planIDexist = await GymPlan.findOne({ _id });
-
-  if (!planIDexist) {
-    return res.status(404).json({ message: "Gym Day not Found" });
-  }
-};
-
-module.exports.UpdateGymPlan = async (req, res) => {
   try {
     const { planName, _id } = req.body;
 
@@ -114,6 +106,28 @@ module.exports.AddExercise = async (req, res) => {
     }
 
     return res.status(200).json(updatedGymPlan);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+module.exports.DeleteExercise = async (req, res) => {
+  try {
+    const { _id, exercise_id } = req.body;
+    const result = await GymPlan.findByIdAndUpdate(
+      _id,
+      { $pull: { exercises: { _id: exercise_id } } },
+      { new: true }
+    );
+    console.log("Results : " + result);
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ message: "Gym Plan not found or Exercise not found" });
+    }
+
+    return res.status(200).json({ message: "Exercise removed successfully" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error: error.message });
   }

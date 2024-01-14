@@ -150,9 +150,26 @@ const Gymplan = () => {
     }
   };
 
-  const editExercise = async (_id, exerciseId, newName) => {};
+  const deleteExercise = async (_id, exerciseId) => {
+    try {
+      console.log(_id + " " + exerciseId);
+      const response = await fetch(`http://localhost:9000/delete-exercise`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          _id: _id,
+          exercise_id: exerciseId,
+        }),
+      });
 
-  const deleteExercise = async (_id, exerciseId) => {};
+      if (response.ok) {
+        fetchGymPlanData();
+        selectPlan(_id);
+      }
+    } catch (error) {
+      console.error("Error deleting plan:", error);
+    }
+  };
 
   return (
     <main>
@@ -230,36 +247,10 @@ const Gymplan = () => {
           <ul>
             {selectedPlan.exercises.map((exercise) => (
               <li key={exercise._id} id={exercise._id}>
-                {editingExerciseId === exercise._id ? (
-                  <input
-                    type="text"
-                    defaultValue={exercise.name}
-                    onBlur={(e) =>
-                      editExercise(
-                        selectedPlan._id,
-                        exercise._id,
-                        e.target.value
-                      )
-                    }
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter") {
-                        editExercise(
-                          selectedPlan._id,
-                          exercise._id,
-                          e.target.value
-                        );
-                      }
-                    }}
-                    autoFocus
-                  />
-                ) : (
-                  <span onClick={() => setEditingExerciseId(exercise._id)}>
-                    {exercise.name}
-                  </span>
-                )}
-                <button onClick={() => setEditingExerciseId(exercise._id)}>
-                  Edit
-                </button>
+                <span>{exercise.name}</span> -<span>{exercise.reps} reps</span>{" "}
+                -<span>{exercise.sets} sets</span> -
+                <span>{exercise.weightKg} kg</span> -
+                <span>{exercise.duration} (M)</span>
                 <button
                   onClick={() => deleteExercise(selectedPlan._id, exercise._id)}
                 >

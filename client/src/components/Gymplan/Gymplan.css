@@ -1,6 +1,6 @@
 #gymplan {
   border: 1px solid black;
-  width: auto;
+  width: 350px;
   min-width: 100px;
   max-width: 500px;
   overflow: auto;
@@ -10,7 +10,7 @@
 
 #exercises {
   border: 1px solid black;
-  width: auto;
+  width: 350px;
   min-width: 100px;
   max-width: 500px;
 
