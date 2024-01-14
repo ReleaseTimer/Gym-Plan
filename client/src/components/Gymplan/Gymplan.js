@@ -229,14 +229,35 @@ const Gymplan = () => {
           </form>
           <ul>
             {selectedPlan.exercises.map((exercise) => (
-              <li key={exercise._id}>
-                <span>{exercise.name}</span> -<span>{exercise.reps} reps</span>{" "}
-                -<span>{exercise.sets} sets</span> -
-                <span>{exercise.weightKg} kg</span> -
-                <span>{exercise.duration} (M)</span>
-                <button
-                  onClick={() => editExercise(selectedPlan._id, exercise._id)}
-                >
+              <li key={exercise._id} id={exercise._id}>
+                {editingExerciseId === exercise._id ? (
+                  <input
+                    type="text"
+                    defaultValue={exercise.name}
+                    onBlur={(e) =>
+                      editExercise(
+                        selectedPlan._id,
+                        exercise._id,
+                        e.target.value
+                      )
+                    }
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        editExercise(
+                          selectedPlan._id,
+                          exercise._id,
+                          e.target.value
+                        );
+                      }
+                    }}
+                    autoFocus
+                  />
+                ) : (
+                  <span onClick={() => setEditingExerciseId(exercise._id)}>
+                    {exercise.name}
+                  </span>
+                )}
+                <button onClick={() => setEditingExerciseId(exercise._id)}>
                   Edit
                 </button>
                 <button
