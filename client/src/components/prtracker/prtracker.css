@@ -1,0 +1,13 @@
+#prtracker {
+  border: 1px solid black;
+  width: 500px;
+  min-width: 100px;
+  max-width: 500px;
+  overflow: auto;
+  display: inline-block;
+  height: 350px;
+}
+
+prtracker form {
+  margin-right: -30%;
+}

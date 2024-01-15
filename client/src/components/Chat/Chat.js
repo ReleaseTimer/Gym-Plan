@@ -7,14 +7,14 @@ import "./Chat.css";
 const socket = io("http://localhost:9000");
 
 function Chat() {
-  const { isAuthenticated } = useContext(AuthContext); // Use AuthContext
+  const { isAuthenticated } = useContext(AuthContext);
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [username, setUsername] = useState("");
 
   useEffect(() => {
     if (!isAuthenticated) {
-      return; // Exit if not authenticated
+      return;
     }
 
     // Fetch the user's profile to get the username

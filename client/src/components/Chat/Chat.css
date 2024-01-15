@@ -7,12 +7,3 @@
   display: inline-block;
   height: 350px;
 }
-
-.incoming-message {
-  color: blue;
-}
-
-.outgoing-message {
-  color: green;
-  text-align: right;
-}

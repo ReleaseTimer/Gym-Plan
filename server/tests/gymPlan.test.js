@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../server"); // Adjust this path to your Express app
+const app = require("../server");
 const expect = require("chai").expect;
 
 describe("Gym Plan API Tests", function () {

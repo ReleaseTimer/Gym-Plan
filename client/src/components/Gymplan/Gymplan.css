@@ -1,20 +1,17 @@
 #gymplan {
   border: 1px solid black;
-  width: 350px;
+  width: 500px;
   min-width: 100px;
-  max-width: 500px;
   overflow: auto;
   justify-content: center;
   display: inline-block;
 }
 
 #exercises {
-  border: 1px solid black;
-  width: 350px;
-  min-width: 100px;
-  max-width: 500px;
-
   display: inline-block;
+  border: 1px solid black;
+  width: 500px;
+  min-width: 100px;
   margin: 10px 10px;
 }
 

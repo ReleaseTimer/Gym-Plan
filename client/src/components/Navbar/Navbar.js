@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import "./Navbar.css";
 import AuthModal from "./AuthModal";
-import ProfileModal from "./ProfileModal"; // Import the new modal
+import ProfileModal from "./ProfileModal";
 import { AuthContext } from "../AuthContext";
 
 const Navbar = () => {
@@ -21,7 +21,7 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <div className="title">Gym Plan</div>
+      <div className="title">Gym Workout Record System</div>
       <div className="buttons">
         {isAuthenticated ? (
           <>

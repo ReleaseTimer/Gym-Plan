@@ -7,7 +7,6 @@ const Gymplan = () => {
   const { isAuthenticated } = useContext(AuthContext);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [editingPlanId, setEditingPlanId] = useState(null);
-  const [editingExerciseId, setEditingExerciseId] = useState(null);
 
   let cookieValue = document.cookie.replace(
     /(?:(?:^|.*;\s*)token\s*\=\s*([^;]*).*$)|^.*$/,

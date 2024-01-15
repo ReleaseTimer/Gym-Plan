@@ -6,6 +6,7 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const authroute = require("./Routes/AuthRoute");
 const gymroute = require("./Routes/GymRoute");
+const prroute = require("./Routes/PrRoute");
 const http = require("http");
 const socketIo = require("socket.io");
 
@@ -70,5 +71,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use("/", authroute);
 app.use("/", gymroute);
+app.use("/", prroute);
 
 module.exports = app;
