@@ -94,7 +94,7 @@ const PrTracker = () => {
       }
       fetchPrs();
     } catch (error) {
-      console.error("Error deleting PR:", error);
+      console.error("Errors deleting PR:", error);
     }
   };
   if (!isAuthenticated) {
