@@ -6,6 +6,18 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const authroute = require("./Routes/AuthRoute");
 const gymroute = require("./Routes/GymRoute");
+const http = require("http");
+const socketIo = require("socket.io");
+
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
 //Used for hiding information
 require("dotenv").config();
 const { MONGODB_CON, PORT } = process.env;
@@ -26,15 +38,29 @@ try {
   console.log(error);
 }
 
+// Socket.IO Connection Handler
+io.on("connection", (socket) => {
+  console.log("New WebSocket connection");
+
+  // Handle chat message event
+  socket.on("chat message", (msg) => {
+    io.emit("chat message", msg); // Emit message to all clients
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected");
+  });
+});
+
 //Listening Server
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Listening on Port: ${PORT}`);
 });
 
 //Allows CORS
 app.use(
   cors({
-    origin: [`http://localhost:3000`],
+    origin: [`http://localhost:3000`, "http://localhost:4000"],
     methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })

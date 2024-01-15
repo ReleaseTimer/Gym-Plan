@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const User = require("../Models/UserModel");
 const jwt = require("jsonwebtoken");
+const { model } = require("mongoose");
 require("dotenv").config();
 
 //Function to generate JWTOKEN
@@ -98,7 +99,70 @@ module.exports.CheckAuth = async (req, res) => {
   }
 };
 
+module.exports.GetUserProfile = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "Unauthorized" });
+
+    const decoded = jwt.verify(token, process.env.JWTOKEN);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ username: user.username, email: user.email });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+module.exports.UpdateUserProfile = async (req, res) => {
+  try {
+    const { username, email } = req.body;
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "Unauthorized" });
+
+    const decoded = jwt.verify(token, process.env.JWTOKEN);
+    const updatedUser = await User.findByIdAndUpdate(
+      decoded.id,
+      { username, email },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res
+      .status(200)
+      .json({ username: updatedUser.username, email: updatedUser.email });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+module.exports.DeleteUser = async (req, res) => {
+  try {
+    const token = req.cookies.token;
+    if (!token) return res.status(401).json({ message: "Unauthorized" });
+
+    const decoded = jwt.verify(token, process.env.JWTOKEN);
+    const user = await User.findById(decoded.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    await User.findByIdAndDelete(decoded.id);
+    res.clearCookie("token"); // Clear the token cookie as the user is deleted
+    res.status(200).json({ message: "User deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
 module.exports.Logout = (req, res) => {
-  res.clearCookie("token"); // Clear the cookie named 'token'
+  res.clearCookie("token");
   res.status(200).json({ message: "Successfully logged out" });
 };

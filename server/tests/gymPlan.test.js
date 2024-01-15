@@ -15,7 +15,7 @@ describe("Gym Plan API Tests", function () {
           planName: "Plan A",
           exercises: [{ name: "Push-up", duration: 30 }],
         })
-        .expect(201) // Adjust status code as per your implementation
+        .expect(201)
         .end(function (err, res) {
           if (err) return done(err);
           expect(res.body).to.have.property("message", "Exercise Plan Created");
@@ -32,7 +32,7 @@ describe("Gym Plan API Tests", function () {
         .send({
           userID: "123",
         })
-        .expect(422) // Adjust status code as per your implementation
+        .expect(422)
         .end(function (err, res) {
           if (err) return done(err);
           expect(res.body).to.have.property("message", "Missing Feilds");

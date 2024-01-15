@@ -1,5 +1,4 @@
 const GymPlan = require("../Models/GymModel");
-const mongoose = require("mongoose");
 
 module.exports.CreateGymPlan = async (req, res) => {
   try {
